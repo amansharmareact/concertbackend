@@ -2,6 +2,7 @@ const { body,check,query, param,header} = require('express-validator');
 
 const SignupValidate = [
   check("name").notEmpty().withMessage("Name is required"),
+  check("phone").notEmpty().withMessage("Phone Number is required"),
   check("email").notEmpty().withMessage("Email is required"),
   check("email")
     .notEmpty()
@@ -13,9 +14,6 @@ const SignupValidate = [
       }
       return true;
     }),
-  check("password").notEmpty().withMessage("Password is required"),
-  check("countryCode").notEmpty().withMessage("Country code is required"),
-  check("phone").notEmpty().withMessage("Phone number is required"),
 ];
 
 const LoginValidate = [

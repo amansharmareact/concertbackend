@@ -16,11 +16,6 @@ exports.signUp = async (req, res) => {
       email,
       phone,
       password,
-      countryCode,
-      collegeName,
-      collegeId,
-      image,
-      linkedIn
     } = req.body;
       const lowerCaseEmail = email.toLowerCase();
     const find = await USER.findOne({ email:lowerCaseEmail,isVerified:true });
@@ -37,18 +32,13 @@ exports.signUp = async (req, res) => {
       password: hashed,
       name: name,
       phone: phone,
-      countryCode: countryCode,
-      collegeName: collegeName,
-      collegeId: collegeId,
-      image: image,
-      linkedIn: linkedIn,
     };
     const create = await USER.create(refData);
     if (create) {
       // const sendOtp = await sendOTPEmail(req.body.email);
-      const otp = 1234;
+      const otp = "1234";
       const otpTime = new Date();
-      // otpTime.setMinutes(otpTime.getMinutes() + 5); 
+      otpTime.setMinutes(otpTime.getMinutes() + 5); 
       // const update = await USER.findOneAndUpdate(
       //   { email: email },
       //   { $set: { otp: sendOtp.otp, otpTime: sendOtp.otpTime } },
@@ -85,12 +75,6 @@ exports.login = async (req, res) => {
       });
     }
 
-    if (find.isBlock) { 
-      return res.status(error.status.Forbidden).send({
-        message: "You are blocked by the admin.",
-        status: error.status.Forbidden,
-      });
-    }
 
     const com_pass = await bcrypt.compare(password, find.password);
     if (!com_pass) {
