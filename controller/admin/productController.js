@@ -4,25 +4,25 @@ const Category = require("../../model/categoryModel");
 
 exports.createProduct = async (req, res) => {
   try {
-    const { name, description, category, price, discount, stock, sku, images } = req.body;
+    const { name, description, category, price, discount, stock, images } = req.body;
 
     // Convert category from name to ObjectId
-    const categoryDoc = await Category.findOne({ name: category });
+    const categoryDoc = await Category.findById(category);
     if (!categoryDoc) {
       return res.status(400).json({ message: "Invalid category" });
     }
     
-    const categoryId = categoryDoc._id;
-
+    const categoryId = categoryDoc._id.toString();
+    const randomSuffix = Math.floor(1000 + Math.random() * 9000); // 4-digit random number
+    const sku = `${name.substring(0, 3).toUpperCase()}-${categoryDoc.name.substring(0, 3).toUpperCase()}-${randomSuffix}`;
     // Calculate finalPrice
     const finalPrice = price - (discount.isPercentage ? (price * discount.amount) / 100 : discount.amount);
-    console.log(finalPrice)
     if (isNaN(finalPrice)) {
       return res.status(400).json({ message: "Invalid price or discount values" });
     }
 
     const product = new Product({ name, description, category: categoryId, price, discount, stock, sku, images, finalPrice });
-
+    console.log(product)
     await product.save();
     res.status(201).json({ message: "Product created successfully", product });
   } catch (error) {
@@ -31,26 +31,59 @@ exports.createProduct = async (req, res) => {
 };
 
 
-
-exports.deleteProduct = async (productId) => {
+exports.deleteProduct = async (req, res) => {
   try {
-    const deletedProduct = await Product.findByIdAndDelete(productId);
-    if (!deletedProduct) throw new Error('Product not found');
-    return deletedProduct;
+   
+    const deletedProduct = await Product.deleteOne({ _id: req.params.id });
+
+    if (!deletedProduct) {
+      return res.status(404).json({ message: "Product not found", status: 404 });
+    }
+
+    return res.status(200).json({
+      message: "Product deleted successfully",
+      status: 200,
+      data: deletedProduct,
+    });
   } catch (error) {
-    throw new Error('Error deleting product: ' + error.message);
+    return res.status(500).json({
+      message: "Error deleting product: " + error.message,
+      status: 500,
+    });
   }
 };
 
-exports.updateProduct = async (productId, updateData) => {
+
+exports.updateProduct = async (req, res) => {
   try {
-    const updatedProduct = await Product.findByIdAndUpdate(productId, updateData, { new: true });
-    if (!updatedProduct) throw new Error('Product not found');
-    return updatedProduct;
-  } catch (error) {
-    throw new Error('Error updating product: ' + error.message);
+    const arrayOfEditKeys = ["name", "description", "category", "price", "discount", "stock", "images"];
+    const objectUpdate = {};
+    for (const key of arrayOfEditKeys) {
+      if (req.body[key] != null) {
+        objectUpdate[key] = req.body[key];
+      }
+    }
+    const update = await Product.findByIdAndUpdate(
+      { _id: req.params.id },
+      objectUpdate,
+      { new: true }
+    );
+    console.log('sss',update)
+    if (update) {
+      return res.status(error.status.OK).send({
+        message: "Product Updated Successfully.",
+        status: error.status.OK,
+        data: update,
+      });
+    }
+  } catch (e) {
+    return res.status(error.status.InternalServerError).json({
+      message: e.message,
+      status: error.status.InternalServerError,
+    });
   }
 };
+
 
 exports.getProductById = async (productId) => {
   try {
@@ -62,21 +95,27 @@ exports.getProductById = async (productId) => {
   }
 };
 
-exports.getProducts = async (filter = {}, sort = {}, page = 1, limit = 10) => {
+
+exports.getProducts = async (req, res) => {
   try {
-    const products = await Product.find(filter)
-      .sort(sort)
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .populate('category');
-    const totalCount = await Product.countDocuments(filter);
-    return {
-      products,
-      totalCount,
-      totalPages: Math.ceil(totalCount / limit),
-      currentPage: page,
-    };
-  } catch (error) {
-    throw new Error('Error fetching products: ' + error.message);
+    const products = await Product.find().populate("category");
+
+    if (products.length === 0) {
+      return res.status(404).send({
+        message: "Products not found",
+        status: 404,
+      });
+    }
+
+    return res.status(200).send({
+      message: "Success",
+      status: 200,
+      data: products,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      message: e.message || "Internal Server Error",
+      status: 500,
+    });
   }
 };

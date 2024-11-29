@@ -24,10 +24,10 @@ router.delete("/deleteUser", verifyAdmin, userController.deleteUser);
 
 //product CRUD
 router.post("/addProduct", verifyAdmin, productController.createProduct)
-router.put("/editProduct", verifyAdmin, productController.updateProduct)
-router.get("/getProduct/:id", verifyAdmin, productController.getProductById)
+router.put("/editProduct/:id", verifyAdmin, productController.updateProduct)
+// router.get("/getProduct/:id", verifyAdmin, productController.getProductById)
 router.get("/getProduct", verifyAdmin, productController.getProducts)
-router.delete("/deleteProduct", verifyAdmin, productController.deleteProduct)
+router.delete("/deleteProduct/:id", verifyAdmin, productController.deleteProduct)
 
 
 //category CRUD
