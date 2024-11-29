@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require("mongoose");
 
 const ProductSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
@@ -39,6 +39,5 @@ const ProductSchema = new mongoose.Schema({
   timestamps: true,  // Automatically manage createdAt and updatedAt fields
 });
 
-const Product = mongoose.models.Product || mongoose.model('Product', ProductSchema);
+module.exports = mongoose.model("Product", ProductSchema);
 
-export default Product;
