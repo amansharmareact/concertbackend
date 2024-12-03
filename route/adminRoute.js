@@ -3,6 +3,7 @@ const router = express.Router();
 const adminController = require("../controller/admin/authController");
 const productController = require("../controller/admin/productController");
 const categoryController = require("../controller/admin/categoryController");
+const orderController = require("../controller/admin/orderController");
 const message = require("../middleware/validationError");
 const adminValidation = require("../validation/adminValidation");
 const { verifyAdmin } = require("../middleware/authMiddleware");
@@ -36,5 +37,10 @@ router.put("/editCategory/:id", verifyAdmin, categoryController.editCategory)
 // router.get("/getCategory/:id", verifyAdmin, categoryController.getAllCategory)
 router.get("/getCategory", verifyAdmin, categoryController.getAllCategory)
 router.delete("/deleteCategory/:id", verifyAdmin, categoryController.deleteCategory)
+
+
+//order CRUD
+router.get('/getAllOrder', verifyAdmin, orderController.getUserOrders);
+router.get('/getOrder/:id', verifyAdmin, orderController.getOrderById);
 
 module.exports = router;
