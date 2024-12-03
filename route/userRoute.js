@@ -15,6 +15,8 @@ router.post("/login", userAuthController.login)
 
 router.post('/createOrder', verifyUserToken, orderController.createOrder);
 router.get('/getAllOrder', verifyUserToken, orderController.getUserOrders);
+router.get('/getOrder/:id', verifyUserToken, orderController.getOrderById);
+
 
 
 

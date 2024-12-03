@@ -40,7 +40,7 @@ router.delete("/deleteCategory/:id", verifyAdmin, categoryController.deleteCateg
 
 
 //order CRUD
-router.get('/getAllOrder', verifyAdmin, orderController.getUserOrders);
+router.get('/getAllOrders', verifyAdmin, orderController.getAllOrders);
 router.get('/getOrder/:id', verifyAdmin, orderController.getOrderById);
 
 module.exports = router;

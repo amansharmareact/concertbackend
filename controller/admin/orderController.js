@@ -116,3 +116,18 @@ exports.deleteOrder = async (req, res) => {
       res.status(500).json({ message: "Error deleting order", error: error.message });
     }
   };
+
+
+  exports.getAllOrders = async (req, res) => {
+    try {
+      const orders = await Order.find().populate('items.productId', 'name price'); // Adjust population as needed
+  
+      if (!orders.length) {
+        return res.status(404).json({ message: "No orders found" });
+      }
+  
+      res.status(200).json({ message: "All orders fetched successfully", orders });
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching orders", error: error.message });
+    }
+  };
