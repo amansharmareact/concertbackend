@@ -8,7 +8,7 @@ const message = require("../middleware/validationError");
 const adminValidation = require("../validation/adminValidation");
 const { verifyAdmin } = require("../middleware/authMiddleware");
 const userController = require("../controller/admin/userController");
-
+const faqController =require("../controller/admin/faqController")
 //auth management
 router.post(
   "/adminLogin",
@@ -42,5 +42,12 @@ router.delete("/deleteCategory/:id", verifyAdmin, categoryController.deleteCateg
 //order CRUD
 router.get('/getAllOrders', verifyAdmin, orderController.getAllOrders);
 router.get('/getOrder/:id', verifyAdmin, orderController.getOrderById);
+
+
+//FAQ CRUD
+router.post('/faqs', faqController.createFAQ);
+router.get('/faqs', faqController.getAllFAQs);
+router.put('/faqs/:id', faqController.updateFAQ);
+router.delete('/faqs/:id', faqController.deleteFAQ);
 
 module.exports = router;
