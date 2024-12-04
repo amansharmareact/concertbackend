@@ -45,9 +45,9 @@ router.get('/getOrder/:id', verifyAdmin, orderController.getOrderById);
 
 
 //FAQ CRUD
-router.post('/faqs', faqController.createFAQ);
-router.get('/faqs', faqController.getAllFAQs);
-router.put('/faqs/:id', faqController.updateFAQ);
-router.delete('/faqs/:id', faqController.deleteFAQ);
+router.post('/addfaq', faqController.createFAQ);
+router.get('/getAllFaq', faqController.getAllFAQs);
+router.put('/editFaq/:id', faqController.updateFAQ);
+router.delete('/deleteFaq/:id', faqController.deleteFAQ);
 
 module.exports = router;
