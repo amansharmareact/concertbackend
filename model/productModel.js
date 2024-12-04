@@ -7,8 +7,7 @@ const ProductSchema = new mongoose.Schema({
 
   price: { type: Number, required: true },
   discount: {
-    amount: { type: Number, default: 0 },
-    isPercentage: { type: Boolean, default: false },
+    isPercentage: { type: Number, default: false },
   },
   finalPrice: { type: Number, required: true },  // Could be derived from price and discount
   

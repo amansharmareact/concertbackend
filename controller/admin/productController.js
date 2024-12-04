@@ -4,7 +4,7 @@ const Category = require("../../model/categoryModel");
 
 exports.createProduct = async (req, res) => {
   try {
-    const { name, description, category, price, discount, stock, images } = req.body;
+    const { name, description, category, price, discount,finalPrice,  stock, images } = req.body;
 
     // Convert category from name to ObjectId
     const categoryDoc = await Category.findById(category);
@@ -15,11 +15,6 @@ exports.createProduct = async (req, res) => {
     const categoryId = categoryDoc._id.toString();
     const randomSuffix = Math.floor(1000 + Math.random() * 9000); // 4-digit random number
     const sku = `${name.substring(0, 3).toUpperCase()}-${categoryDoc.name.substring(0, 3).toUpperCase()}-${randomSuffix}`;
-    // Calculate finalPrice
-    const finalPrice = price - (discount.isPercentage ? (price * discount.amount) / 100 : discount.amount);
-    if (isNaN(finalPrice)) {
-      return res.status(400).json({ message: "Invalid price or discount values" });
-    }
 
     const product = new Product({ name, description, category: categoryId, price, discount, stock, sku, images, finalPrice });
     console.log(product)
