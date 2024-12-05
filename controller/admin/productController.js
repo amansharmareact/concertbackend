@@ -4,7 +4,7 @@ const Category = require("../../model/categoryModel");
 
 exports.createProduct = async (req, res) => {
   try {
-    const { name, description, category, price, discount,finalPrice, tags, stock, images,specifications } = req.body;
+    const { name, description, category, price, discount,finalPrice, tags, images,specifications } = req.body;
 
     // Convert category from name to ObjectId
     const categoryDoc = await Category.findById(category);
@@ -16,7 +16,7 @@ exports.createProduct = async (req, res) => {
     const randomSuffix = Math.floor(1000 + Math.random() * 9000); // 4-digit random number
     const sku = `${name.substring(0, 3).toUpperCase()}-${categoryDoc.name.substring(0, 3).toUpperCase()}-${randomSuffix}`;
 
-    const product = new Product({ name, description, category: categoryId, price, tags, discount, stock, sku, images, finalPrice,specifications });
+    const product = new Product({ name, description, category: categoryId, price, tags, discount, images, finalPrice,specifications });
     console.log(product)
     await product.save();
     res.status(201).json({ message: "Product created successfully", product });

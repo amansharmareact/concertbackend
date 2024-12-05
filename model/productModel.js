@@ -11,8 +11,6 @@ const ProductSchema = new mongoose.Schema({
   },
   finalPrice: { type: Number, required: true },  // Could be derived from price and discount
   
-  stock: { type: Number, required: true },
-  sku: { type: String, unique: true, required: true },  // Stock Keeping Unit, for inventory management
   
   images: [{ type: String, required: true }],  // URLs or paths to product images
   
