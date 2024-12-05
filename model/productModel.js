@@ -28,14 +28,14 @@ const ProductSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now },
   }],
 
-  tags: [{ type: String }],  // Tags for search and filter purposes
-
-  specifications: { type: Map, of: String },  // A map for product specs, e.g., color, size, material
+  tags: [{ type: String }], 
+  color:[{ type: String }],
+  size:[{ type: String }],
   
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 }, {
-  timestamps: true,  // Automatically manage createdAt and updatedAt fields
+  timestamps: true,  
 });
 
 module.exports = mongoose.model("Product", ProductSchema);
