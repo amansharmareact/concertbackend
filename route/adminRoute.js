@@ -9,6 +9,7 @@ const adminValidation = require("../validation/adminValidation");
 const { verifyAdmin } = require("../middleware/authMiddleware");
 const userController = require("../controller/admin/userController");
 const faqController =require("../controller/admin/faqController")
+const blogController =require("../controller/admin/blogController")
 //auth management
 router.post(
   "/adminLogin",
@@ -45,9 +46,17 @@ router.get('/getOrder/:id', verifyAdmin, orderController.getOrderById);
 
 
 //FAQ CRUD
-router.post('/addfaq', faqController.createFAQ);
-router.get('/getAllFaq', faqController.getAllFAQs);
-router.put('/editFaq/:id', faqController.updateFAQ);
-router.delete('/deleteFaq/:id', faqController.deleteFAQ);
+router.post('/addfaq', verifyAdmin ,faqController.createFAQ);
+router.get('/getAllFaq',verifyAdmin , faqController.getAllFAQs);
+router.put('/editFaq/:id', verifyAdmin ,faqController.updateFAQ);
+router.delete('/deleteFaq/:id',verifyAdmin , faqController.deleteFAQ);
+
+
+//Blog CRUD
+router.post('/addBlog', verifyAdmin ,blogController.createBlog);
+router.get('/getAllBlog',verifyAdmin , blogController.getAllBlogs);
+router.get('/getBlogById/:id',verifyAdmin , blogController.getBlogById);
+router.put('/editBlog/:id',verifyAdmin , blogController.updateBlog);
+router.delete('deleteBlog/:id',verifyAdmin , blogController.deleteBlogByid);
 
 module.exports = router;
