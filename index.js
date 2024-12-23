@@ -8,11 +8,20 @@ const fileuploads = require("express-fileupload");
 require("./database/db");
 
 
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001'];
+
 app.use(cors({
-    origin: 'http://localhost:3001',
-    methods: ['POST', 'GET', 'PUT', 'DELETE'],
-    credentials: true,
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['POST', 'GET', 'PUT', 'DELETE'],
+  credentials: true,
 }));
+
 
 
 
