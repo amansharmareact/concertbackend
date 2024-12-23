@@ -12,10 +12,12 @@ const UserSchema = new mongoose.Schema(
       ref: "Product",
       default: [],
     },
-    cart: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Cart", // Reference to Cart model
-    },
+    cart: [
+      {
+        productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+        quantity: { type: Number, default: 1 },
+      },
+    ],
     addresses: [
       {
         line1: { type: String, required: true },
