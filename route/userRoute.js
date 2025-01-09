@@ -23,5 +23,5 @@ router.get("/getProduct", productController.getProducts)
 
 router.get("/getCategory", categoryController.getAllCategory)
 router.post("/addToCart", cartController.addToCart)
-
+router.get("/getCart" , cartController.getCart);
 module.exports=router; 
